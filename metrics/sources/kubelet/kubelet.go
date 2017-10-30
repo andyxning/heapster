@@ -33,6 +33,7 @@ import (
 	kube_api "k8s.io/client-go/pkg/api/v1"
 	"k8s.io/client-go/tools/cache"
 	"k8s.io/heapster/metrics/util"
+	"k8s.io/heapster/metrics/util/metrics"
 )
 
 const (
@@ -136,7 +137,7 @@ func (this *kubeletMetricsSource) decodeMetrics(c *cadvisor.ContainerInfo) (stri
 		LabeledMetrics: []LabeledMetric{},
 	}
 
-	if isNode(c) {
+	if metrics.IsNode(c) {
 		metricSetKey = NodeKey(this.nodename)
 		cMetrics.Labels[LabelMetricSetType.Key] = MetricSetTypeNode
 		cMetrics.Labels[LabelNodeSchedulable.Key] = this.schedulable
@@ -176,13 +177,13 @@ func (this *kubeletMetricsSource) decodeMetrics(c *cadvisor.ContainerInfo) (stri
 
 	for _, metric := range StandardMetrics {
 		if metric.HasValue != nil && metric.HasValue(&c.Spec) {
-			cMetrics.MetricValues[metric.Name] = metric.GetValue(&c.Spec, c.Stats[0])
+			cMetrics.MetricValues[metric.Name] = metric.GetValue(c, c.Stats[0])
 		}
 	}
 
 	for _, metric := range LabeledMetrics {
 		if metric.HasLabeledMetric != nil && metric.HasLabeledMetric(&c.Spec) {
-			labeledMetrics := metric.GetLabeledMetric(&c.Spec, c.Stats[0])
+			labeledMetrics := metric.GetLabeledMetric(c, c.Stats[0])
 			cMetrics.LabeledMetrics = append(cMetrics.LabeledMetrics, labeledMetrics...)
 		}
 	}

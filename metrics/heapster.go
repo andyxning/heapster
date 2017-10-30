@@ -203,6 +203,7 @@ func createAndInitSinksOrDie(sinkAddresses flags.Uris, historicalSource string) 
 	if err != nil {
 		glog.Fatalf("Failed to create sink manager: %v", err)
 	}
+
 	return sinkManager, metricSink, histSource
 }
 
@@ -249,18 +250,38 @@ func createDataProcessorsOrDie(kubernetesUrl *url.URL, podLister v1listers.PodLi
 	// aggregators
 	metricsToAggregate := []string{
 		core.MetricCpuUsageRate.Name,
+		core.MetricMemoryCache.Name,
+		core.MetricMemoryRSS.Name,
 		core.MetricMemoryUsage.Name,
+		core.MetricMemoryWorkingSet.Name,
+		core.MetricMemoryPageFaultsRate.Name,
+		core.MetricMemoryMajorPageFaultsRate.Name,
 		core.MetricCpuRequest.Name,
 		core.MetricCpuLimit.Name,
 		core.MetricMemoryRequest.Name,
 		core.MetricMemoryLimit.Name,
+		core.MetricNetworkRxRate.Name,
+		core.MetricNetworkRxErrorsRate.Name,
+		core.MetricNetworkTxRate.Name,
+		core.MetricNetworkTxErrorsRate.Name,
 	}
 
 	metricsToAggregateForNode := []string{
+		core.MetricCpuUsageRate.Name,
+		core.MetricMemoryCache.Name,
+		core.MetricMemoryRSS.Name,
+		core.MetricMemoryUsage.Name,
+		core.MetricMemoryWorkingSet.Name,
+		core.MetricMemoryPageFaultsRate.Name,
+		core.MetricMemoryMajorPageFaultsRate.Name,
 		core.MetricCpuRequest.Name,
 		core.MetricCpuLimit.Name,
 		core.MetricMemoryRequest.Name,
 		core.MetricMemoryLimit.Name,
+		core.MetricNetworkRxRate.Name,
+		core.MetricNetworkRxErrorsRate.Name,
+		core.MetricNetworkTxRate.Name,
+		core.MetricNetworkTxErrorsRate.Name,
 	}
 
 	dataProcessors = append(dataProcessors,
