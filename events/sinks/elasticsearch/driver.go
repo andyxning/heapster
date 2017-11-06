@@ -56,18 +56,9 @@ type EsSinkPoint struct {
 
 func eventToPoint(event *kube_api.Event, clusterName string) (*EsSinkPoint, error) {
 	point := EsSinkPoint{
-		FirstOccurrenceTimestamp: event.FirstTimestamp.Time.UTC(),
-		LastOccurrenceTimestamp:  event.LastTimestamp.Time.UTC(),
-		EventTimestamp:           event.LastTimestamp.Time.UTC(),
-		Message:                  event.Message,
-		Reason:                   event.Reason,
-		Type:                     event.Type,
-		Count:                    event.Count,
-		Metadata:                 event.ObjectMeta,
-		InvolvedObject:           event.InvolvedObject,
-		Source:                   event.Source,
+		EventTimestamp: event.LastTimestamp.Time.UTC(),
+		Source:         event.Source,
 		EventTags: map[string]string{
-			"eventID":      string(event.UID),
 			"cluster_name": clusterName,
 			"eventType":    event.Type,
 			"eventKind":    event.InvolvedObject.Kind,
