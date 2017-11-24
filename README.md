@@ -1,3 +1,6 @@
+# Custom Feature
+* Only sink `Pulling` event
+
 # Heapster
 
 [![GoDoc](https://godoc.org/k8s.io/heapster?status.svg)](https://godoc.org/k8s.io/heapster) [![Build Status](https://travis-ci.org/kubernetes/heapster.svg?branch=master)](https://travis-ci.org/kubernetes/heapster)

@@ -81,13 +81,15 @@ func (sink *elasticSearchSink) ExportEvents(eventBatch *event_core.EventBatch) {
 	sink.Lock()
 	defer sink.Unlock()
 	for _, event := range eventBatch.Events {
-		point, err := eventToPoint(event, sink.esSvc.ClusterName)
-		if err != nil {
-			glog.Warningf("Failed to convert event to point: %v", err)
-		}
-		err = sink.saveData(point.LastOccurrenceTimestamp, []interface{}{*point})
-		if err != nil {
-			glog.Warningf("Failed to export data to ElasticSearch sink: %v", err)
+		if event.Reason == "Pulling" {
+			point, err := eventToPoint(event, sink.esSvc.ClusterName)
+			if err != nil {
+				glog.Warningf("Failed to convert event to point: %v", err)
+			}
+			err = sink.saveData(point.LastOccurrenceTimestamp, []interface{}{*point})
+			if err != nil {
+				glog.Warningf("Failed to export data to ElasticSearch sink: %v", err)
+			}
 		}
 	}
 	err := sink.flushData()
