@@ -50,6 +50,7 @@ type HeapsterRunOptions struct {
 	IgnoredLabels       []string
 	StoredLabels        []string
 	DisableMetricExport bool
+	DisableMetricSink   bool
 }
 
 func NewHeapsterRunOptions() *HeapsterRunOptions {
@@ -88,4 +89,5 @@ func (h *HeapsterRunOptions) AddFlags(fs *pflag.FlagSet) {
 	fs.StringSliceVar(&h.IgnoredLabels, "ignore_label", []string{}, "ignore this label when joining labels")
 	fs.StringSliceVar(&h.StoredLabels, "store_label", []string{}, "store this label separately from joined labels with the same name (name) or with different name (newName=name)")
 	fs.BoolVar(&h.DisableMetricExport, "disable_export", false, "Disable exporting metrics in api/v1/metric-export")
+	fs.BoolVar(&h.DisableMetricSink, "disable_metric_sink", false, "Disable metric sink")
 }
