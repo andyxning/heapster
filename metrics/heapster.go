@@ -190,7 +190,7 @@ func createSourceManagerOrDie(src flags.Uris) core.MetricsSource {
 func createAndInitSinksOrDie(sinkAddresses flags.Uris, historicalSource string, disableMetricSink bool) (core.DataSink, *metricsink.MetricSink, core.HistoricalSource) {
 	sinksFactory := sinks.NewSinkFactory()
 	metricSink, sinkList, histSource := sinksFactory.BuildAll(sinkAddresses, historicalSource, disableMetricSink)
-	if metricSink == nil {
+	if metricSink == nil && !disableMetricSink {
 		glog.Fatal("Failed to create metric sink")
 	}
 	if histSource == nil && len(historicalSource) > 0 {
