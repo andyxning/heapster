@@ -75,7 +75,9 @@ var RateMetricsMapping = map[string]Metric{
 
 var LabeledMetrics = []Metric{
 	MetricDiskIORead,
+	MetricDiskIOReadRate,
 	MetricDiskIOWrite,
+	MetricDiskIOWriteRate,
 	MetricFilesystemUsage,
 	MetricFilesystemLimit,
 	MetricFilesystemAvailable,

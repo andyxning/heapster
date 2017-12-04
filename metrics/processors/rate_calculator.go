@@ -15,8 +15,6 @@
 package processors
 
 import (
-	"reflect"
-
 	"k8s.io/heapster/metrics/core"
 
 	"github.com/golang/glog"
@@ -69,7 +67,7 @@ func (this *RateCalculator) Process(batch *core.DataBatch) (*core.DataBatch, err
 					if itemNew.Name == metricName {
 						metricValNew, foundNew = itemNew.MetricValue, true
 						for _, itemOld := range oldMs.LabeledMetrics {
-							if itemOld.Name == metricName && reflect.DeepEqual(itemOld.Labels, itemNew.Labels) {
+							if itemOld.Name == metricName {
 								metricValOld, foundOld = itemOld.MetricValue, true
 								break
 							}
@@ -91,6 +89,8 @@ func (this *RateCalculator) Process(batch *core.DataBatch) (*core.DataBatch, err
 								},
 							})
 						}
+					} else if foundNew && !foundOld || !foundNew && foundOld {
+						glog.V(4).Infof("Skipping rates for %s in %s: metric not found in one of old (%v) or new (%v)", metricName, key, foundOld, foundNew)
 					}
 				}
 			} else {
