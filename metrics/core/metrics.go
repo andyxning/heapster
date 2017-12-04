@@ -15,6 +15,7 @@
 package core
 
 import (
+	"fmt"
 	"time"
 
 	cadvisor "github.com/google/cadvisor/info/v1"
@@ -57,7 +58,9 @@ var RateMetrics = []Metric{
 	MetricNetworkRxRate,
 	MetricNetworkRxErrorsRate,
 	MetricNetworkTxRate,
-	MetricNetworkTxErrorsRate}
+	MetricNetworkTxErrorsRate,
+	MetricDiskIOReadRate,
+	MetricDiskIOWriteRate}
 
 var RateMetricsMapping = map[string]Metric{
 	MetricCpuUsage.MetricDescriptor.Name:              MetricCpuUsageRate,
@@ -66,9 +69,13 @@ var RateMetricsMapping = map[string]Metric{
 	MetricNetworkRx.MetricDescriptor.Name:             MetricNetworkRxRate,
 	MetricNetworkRxErrors.MetricDescriptor.Name:       MetricNetworkRxErrorsRate,
 	MetricNetworkTx.MetricDescriptor.Name:             MetricNetworkTxRate,
-	MetricNetworkTxErrors.MetricDescriptor.Name:       MetricNetworkTxErrorsRate}
+	MetricNetworkTxErrors.MetricDescriptor.Name:       MetricNetworkTxErrorsRate,
+	MetricDiskIORead.MetricDescriptor.Name:            MetricDiskIOReadRate,
+	MetricDiskIOWrite.MetricDescriptor.Name:           MetricDiskIOWriteRate}
 
 var LabeledMetrics = []Metric{
+	MetricDiskIORead,
+	MetricDiskIOWrite,
 	MetricFilesystemUsage,
 	MetricFilesystemLimit,
 	MetricFilesystemAvailable,
@@ -792,6 +799,110 @@ var MetricFilesystemInodesFree = Metric{
 			}
 		}
 		return result
+	},
+}
+
+var MetricDiskIORead = Metric{
+	MetricDescriptor: MetricDescriptor{
+		Name:        "disk/io_read_bytes",
+		Description: "Cumulative number of bytes read over disk",
+		Type:        MetricCumulative,
+		ValueType:   ValueInt64,
+		Units:       UnitsBytes,
+		Labels:      metricLabels,
+	},
+	HasLabeledMetric: func(spec *cadvisor.ContainerSpec) bool {
+		return spec.HasDiskIo
+	},
+	GetLabeledMetric: func(spec *cadvisor.ContainerSpec, stat *cadvisor.ContainerStats) []LabeledMetric {
+		result := make([]LabeledMetric, 0, len(stat.DiskIo.IoServiceBytes))
+		for _, ioServiceBytesPerPartition := range stat.DiskIo.IoServiceBytes {
+			resourceIDKey := ioServiceBytesPerPartition.Device
+			if resourceIDKey == "" {
+				resourceIDKey = fmt.Sprintf("%d:%d", ioServiceBytesPerPartition.Major, ioServiceBytesPerPartition.Minor)
+			}
+
+			var value uint64
+			if v, exists := ioServiceBytesPerPartition.Stats["Read"]; exists {
+				value = v
+			}
+
+			result = append(result, LabeledMetric{
+				Name: "disk/io_read_bytes",
+				Labels: map[string]string{
+					LabelResourceID.Key: resourceIDKey,
+				},
+				MetricValue: MetricValue{
+					ValueType:  ValueInt64,
+					MetricType: MetricGauge,
+					IntValue:   int64(value),
+				},
+			})
+		}
+		return result
+	},
+}
+
+var MetricDiskIOWrite = Metric{
+	MetricDescriptor: MetricDescriptor{
+		Name:        "disk/io_write_bytes",
+		Description: "Cumulative number of bytes write over disk",
+		Type:        MetricCumulative,
+		ValueType:   ValueInt64,
+		Units:       UnitsBytes,
+		Labels:      metricLabels,
+	},
+	HasLabeledMetric: func(spec *cadvisor.ContainerSpec) bool {
+		return spec.HasDiskIo
+	},
+	GetLabeledMetric: func(spec *cadvisor.ContainerSpec, stat *cadvisor.ContainerStats) []LabeledMetric {
+		result := make([]LabeledMetric, 0, len(stat.DiskIo.IoServiceBytes))
+		for _, ioServiceBytesPerPartition := range stat.DiskIo.IoServiceBytes {
+			resourceIDKey := ioServiceBytesPerPartition.Device
+			if resourceIDKey == "" {
+				resourceIDKey = fmt.Sprintf("%d:%d", ioServiceBytesPerPartition.Major, ioServiceBytesPerPartition.Minor)
+			}
+
+			var value uint64
+			if v, exists := ioServiceBytesPerPartition.Stats["Write"]; exists {
+				value = v
+			}
+
+			result = append(result, LabeledMetric{
+				Name: "disk/io_write_bytes",
+				Labels: map[string]string{
+					LabelResourceID.Key: resourceIDKey,
+				},
+				MetricValue: MetricValue{
+					ValueType:  ValueInt64,
+					MetricType: MetricGauge,
+					IntValue:   int64(value),
+				},
+			})
+		}
+		return result
+	},
+}
+
+var MetricDiskIOReadRate = Metric{
+	MetricDescriptor: MetricDescriptor{
+		Name:        "disk/io_read_bytes_rate",
+		Description: "Rate of bytes read over disk in bytes per second",
+		Type:        MetricGauge,
+		ValueType:   ValueFloat,
+		Units:       UnitsCount,
+		Labels:      metricLabels,
+	},
+}
+
+var MetricDiskIOWriteRate = Metric{
+	MetricDescriptor: MetricDescriptor{
+		Name:        "disk/io_write_bytes_rate",
+		Description: "Rate of bytes written over disk in bytes per second",
+		Type:        MetricGauge,
+		ValueType:   ValueFloat,
+		Units:       UnitsCount,
+		Labels:      metricLabels,
 	},
 }
 
