@@ -35,6 +35,9 @@ Heapster exports the following metrics to its backends.
 | memory/cache | Cache memory usage. |
 | memory/rss | RSS memory usage. |
 | memory/working_set | Total working set usage. Working set is the memory being used and not easily dropped by the kernel. |
+| accelerator/memory_total | Memory capacity of an accelerator. |
+| accelerator/memory_used | Memory used of an accelerator. |
+| accelerator/duty_cycle | Duty cycle of an accelerator. |
 | network/rx | Cumulative number of bytes received over the network. |
 | network/rx_errors | Cumulative number of errors while receiving over the network. |
 | network/rx_errors_rate | Number of errors while receiving over the network per second. |
@@ -64,7 +67,10 @@ Heapster tags each metric with the following labels.
 | namespace_id   | UID of the namespace of a Pod                                                 |
 | namespace_name | User-provided name of a Namespace                                             |
 | resource_id    | A unique identifier used to differentiate multiple metrics of the same type. e.x. Fs partitions under filesystem/usage, disk device name under disk/io_read_bytes |
-
+| accelerator_make  | Make of the accelerator (nvidia, amd, google etc.) |
+| accelerator_model | Model of the accelerator (tesla-p100, tesla-k80 etc.) |
+| accelerator_id    | ID of the accelerator |
+ 
 **Note**
   * Label separator can be configured with Heapster `--label-separator`. Comma-seperated label pairs is fine until we use [Bosun](http://bosun.org) as alert system and use `group by labels` to search for labels.
     [Bosun(0.5.0) uses comma to split queried tag key and tag value](https://github.com/bosun-monitor/bosun/blob/0.5.0/opentsdb/tsdb.go#L566-L575). For example if the expression used for query InfluxDB from Bosun is like this:
