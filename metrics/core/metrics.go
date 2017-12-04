@@ -1020,6 +1020,17 @@ var MetricAcceleratorDutyCycle = Metric{
 	},
 }
 
+var MetricNodeAcceleratorCapacity = Metric{
+	MetricDescriptor: MetricDescriptor{
+		Name:        "accelerator/node_capacity",
+		Description: "Accelerator capacity of a node",
+		Type:        MetricGauge,
+		ValueType:   ValueFloat,
+		Units:       UnitsCount,
+		Labels:      acceleratorCapacityLabels,
+	},
+}
+
 func IsNodeAutoscalingMetric(name string) bool {
 	for _, autoscalingMetric := range NodeAutoscalingMetrics {
 		if autoscalingMetric.MetricDescriptor.Name == name {

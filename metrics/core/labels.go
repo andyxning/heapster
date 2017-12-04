@@ -147,6 +147,10 @@ var acceleratorLabels = []LabelDescriptor{
 	LabelAcceleratorID,
 }
 
+var acceleratorCapacityLabels = []LabelDescriptor{
+	LabelAcceleratorMake,
+}
+
 // Labels exported to GCM. The number of labels that can be exported to GCM is limited by 10.
 var gcmLabels = []LabelDescriptor{
 	LabelMetricSetType,
