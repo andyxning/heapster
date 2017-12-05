@@ -915,10 +915,10 @@ var MetricAcceleratorMemoryTotal = Metric{
 	MetricDescriptor: MetricDescriptor{
 		Name:        "accelerator/memory_total",
 		Description: "Total accelerator memory (in bytes)",
+		Labels:      acceleratorLabels,
 		Type:        MetricGauge,
 		ValueType:   ValueInt64,
 		Units:       UnitsBytes,
-		Labels:      acceleratorLabels,
 	},
 	HasLabeledMetric: func(spec *cadvisor.ContainerSpec, stat *cadvisor.ContainerStats) bool {
 		if len(stat.Accelerators) == 0 {
@@ -952,10 +952,10 @@ var MetricAcceleratorMemoryUsed = Metric{
 	MetricDescriptor: MetricDescriptor{
 		Name:        "accelerator/memory_used",
 		Description: "Total accelerator memory allocated (in bytes)",
+		Labels:      acceleratorLabels,
 		Type:        MetricGauge,
 		ValueType:   ValueInt64,
 		Units:       UnitsBytes,
-		Labels:      acceleratorLabels,
 	},
 	HasLabeledMetric: func(spec *cadvisor.ContainerSpec, stat *cadvisor.ContainerStats) bool {
 		if len(stat.Accelerators) == 0 {
@@ -989,10 +989,10 @@ var MetricAcceleratorDutyCycle = Metric{
 	MetricDescriptor: MetricDescriptor{
 		Name:        "accelerator/duty_cycle",
 		Description: "Percent of time over the past sample period (10s) during which the accelerator was actively processing",
+		Labels:      acceleratorLabels,
 		Type:        MetricGauge,
 		ValueType:   ValueInt64,
 		Units:       UnitsCount,
-		Labels:      acceleratorLabels,
 	},
 	HasLabeledMetric: func(spec *cadvisor.ContainerSpec, stat *cadvisor.ContainerStats) bool {
 		if len(stat.Accelerators) == 0 {

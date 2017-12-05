@@ -94,11 +94,11 @@ var (
 		Description: "The name of the volume.",
 	}
 	LabelAcceleratorMake = LabelDescriptor{
-		Key:         "accelerator_make",
+		Key:         "make",
 		Description: "Make of the accelerator (nvidia, amd, google etc.)",
 	}
 	LabelAcceleratorModel = LabelDescriptor{
-		Key:         "accelerator_model",
+		Key:         "model",
 		Description: "Model of the accelerator (tesla-p100, tesla-k80 etc.)",
 	}
 	LabelAcceleratorID = LabelDescriptor{

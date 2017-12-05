@@ -68,8 +68,8 @@ Heapster tags each metric with the following labels.
 | namespace_id   | UID of the namespace of a Pod                                                 |
 | namespace_name | User-provided name of a Namespace                                             |
 | resource_id    | A unique identifier used to differentiate multiple metrics of the same type. e.x. Fs partitions under filesystem/usage, disk device name under disk/io_read_bytes |
-| accelerator_make  | Make of the accelerator (nvidia, amd, google etc.) |
-| accelerator_model | Model of the accelerator (tesla-p100, tesla-k80 etc.) |
+| make  | Make of the accelerator (nvidia, amd, google etc.) |
+| model | Model of the accelerator (tesla-p100, tesla-k80 etc.) |
 | accelerator_id    | ID of the accelerator |
  
 **Note**
