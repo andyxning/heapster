@@ -53,25 +53,17 @@ var AdditionalMetrics = []Metric{
 // Computed based on corresponding StandardMetrics.
 var RateMetrics = []Metric{
 	MetricCpuUsageRate,
-	MetricMemoryPageFaultsRate,
-	MetricMemoryMajorPageFaultsRate,
 	MetricNetworkRxRate,
-	MetricNetworkRxErrorsRate,
 	MetricNetworkTxRate,
-	MetricNetworkTxErrorsRate,
 	MetricDiskIOReadRate,
 	MetricDiskIOWriteRate}
 
 var RateMetricsMapping = map[string]Metric{
-	MetricCpuUsage.MetricDescriptor.Name:              MetricCpuUsageRate,
-	MetricMemoryPageFaults.MetricDescriptor.Name:      MetricMemoryPageFaultsRate,
-	MetricMemoryMajorPageFaults.MetricDescriptor.Name: MetricMemoryMajorPageFaultsRate,
-	MetricNetworkRx.MetricDescriptor.Name:             MetricNetworkRxRate,
-	MetricNetworkRxErrors.MetricDescriptor.Name:       MetricNetworkRxErrorsRate,
-	MetricNetworkTx.MetricDescriptor.Name:             MetricNetworkTxRate,
-	MetricNetworkTxErrors.MetricDescriptor.Name:       MetricNetworkTxErrorsRate,
-	MetricDiskIORead.MetricDescriptor.Name:            MetricDiskIOReadRate,
-	MetricDiskIOWrite.MetricDescriptor.Name:           MetricDiskIOWriteRate}
+	MetricCpuUsage.MetricDescriptor.Name:    MetricCpuUsageRate,
+	MetricNetworkRx.MetricDescriptor.Name:   MetricNetworkRxRate,
+	MetricNetworkTx.MetricDescriptor.Name:   MetricNetworkTxRate,
+	MetricDiskIORead.MetricDescriptor.Name:  MetricDiskIOReadRate,
+	MetricDiskIOWrite.MetricDescriptor.Name: MetricDiskIOWriteRate}
 
 var LabeledMetrics = []Metric{
 	MetricDiskIORead,
@@ -119,9 +111,7 @@ var FilesystemMetrics = []Metric{
 var MemoryMetrics = []Metric{
 	MetricMemoryLimit,
 	MetricMemoryMajorPageFaults,
-	MetricMemoryMajorPageFaultsRate,
 	MetricMemoryPageFaults,
-	MetricMemoryPageFaultsRate,
 	MetricMemoryRequest,
 	MetricMemoryUsage,
 	MetricMemoryRSS,
@@ -135,11 +125,9 @@ var MemoryMetrics = []Metric{
 var NetworkMetrics = []Metric{
 	MetricNetworkRx,
 	MetricNetworkRxErrors,
-	MetricNetworkRxErrorsRate,
 	MetricNetworkRxRate,
 	MetricNetworkTx,
 	MetricNetworkTxErrors,
-	MetricNetworkTxErrorsRate,
 	MetricNetworkTxRate,
 }
 

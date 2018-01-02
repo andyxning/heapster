@@ -254,16 +254,12 @@ func createDataProcessorsOrDie(kubernetesUrl *url.URL, podLister v1listers.PodLi
 		core.MetricMemoryRSS.Name,
 		core.MetricMemoryUsage.Name,
 		core.MetricMemoryWorkingSet.Name,
-		core.MetricMemoryPageFaultsRate.Name,
-		core.MetricMemoryMajorPageFaultsRate.Name,
 		core.MetricCpuRequest.Name,
 		core.MetricCpuLimit.Name,
 		core.MetricMemoryRequest.Name,
 		core.MetricMemoryLimit.Name,
 		core.MetricNetworkRxRate.Name,
-		core.MetricNetworkRxErrorsRate.Name,
 		core.MetricNetworkTxRate.Name,
-		core.MetricNetworkTxErrorsRate.Name,
 	}
 
 	metricsToAggregateForNode := []string{
@@ -272,16 +268,12 @@ func createDataProcessorsOrDie(kubernetesUrl *url.URL, podLister v1listers.PodLi
 		core.MetricMemoryRSS.Name,
 		core.MetricMemoryUsage.Name,
 		core.MetricMemoryWorkingSet.Name,
-		core.MetricMemoryPageFaultsRate.Name,
-		core.MetricMemoryMajorPageFaultsRate.Name,
 		core.MetricCpuRequest.Name,
 		core.MetricCpuLimit.Name,
 		core.MetricMemoryRequest.Name,
 		core.MetricMemoryLimit.Name,
 		core.MetricNetworkRxRate.Name,
-		core.MetricNetworkRxErrorsRate.Name,
 		core.MetricNetworkTxRate.Name,
-		core.MetricNetworkTxErrorsRate.Name,
 	}
 
 	dataProcessors = append(dataProcessors,

@@ -63,34 +63,14 @@ func (this *NodeAutoscalingEnricher) Process(batch *core.DataBatch) (*core.DataB
 				})
 			}
 
-			cpuRequested := getInt(metricSet, &core.MetricCpuRequest)
-			cpuUsed := getInt(metricSet, &core.MetricCpuUsageRate)
-			memRequested := getInt(metricSet, &core.MetricMemoryRequest)
-			memUsed := getInt(metricSet, &core.MetricMemoryUsage)
-
-			if allocatableCpu.MilliValue() != 0 {
-				setFloat(metricSet, &core.MetricNodeCpuUtilization, float32(cpuUsed)/float32(allocatableCpu.MilliValue()))
-				setFloat(metricSet, &core.MetricNodeCpuReservation, float32(cpuRequested)/float32(allocatableCpu.MilliValue()))
-			}
 			setFloat(metricSet, &core.MetricNodeCpuCapacity, float32(capacityCpu.MilliValue()))
 			setFloat(metricSet, &core.MetricNodeCpuAllocatable, float32(allocatableCpu.MilliValue()))
 
-			if allocatableMem.Value() != 0 {
-				setFloat(metricSet, &core.MetricNodeMemoryUtilization, float32(memUsed)/float32(allocatableMem.Value()))
-				setFloat(metricSet, &core.MetricNodeMemoryReservation, float32(memRequested)/float32(allocatableMem.Value()))
-			}
 			setFloat(metricSet, &core.MetricNodeMemoryCapacity, float32(capacityMem.Value()))
 			setFloat(metricSet, &core.MetricNodeMemoryAllocatable, float32(allocatableMem.Value()))
 		}
 	}
 	return batch, nil
-}
-
-func getInt(metricSet *core.MetricSet, metric *core.Metric) int64 {
-	if value, found := metricSet.MetricValues[metric.MetricDescriptor.Name]; found {
-		return value.IntValue
-	}
-	return 0
 }
 
 func setFloat(metricSet *core.MetricSet, metric *core.Metric, value float32) {
