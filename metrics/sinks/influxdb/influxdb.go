@@ -45,6 +45,13 @@ var influxdbBlacklistLabels = map[string]struct{}{
 	core.LabelHostID.Key:          {},
 }
 
+// Bytedance
+var daemonsetPodNameBlacklist = map[string]struct{}{
+	"toutiaonamingnkagent": {},
+	"vvtcewatch":           {},
+	"vvtceagent":           {},
+}
+
 const (
 	// Value Field name
 	valueField = "value"
@@ -101,12 +108,25 @@ func (sink *influxdbSink) ExportData(dataBatch *core.DataBatch) {
 				},
 				Time: dataBatch.Timestamp.UTC(),
 			}
+
+			isDaemonSetPod := false
 			for key, value := range metricSet.Labels {
 				if _, exists := influxdbBlacklistLabels[key]; !exists {
 					if value != "" {
 						point.Tags[key] = value
 					}
 				}
+
+				if key == core.LabelPodName.Key {
+					parts := strings.Split(value, "-")
+					if _, exists := daemonsetPodNameBlacklist[parts[0]]; exists {
+						isDaemonSetPod = true
+					}
+				}
+			}
+
+			if isDaemonSetPod {
+				continue
 			}
 
 			point.Tags["cluster_name"] = sink.c.ClusterName
@@ -157,10 +177,18 @@ func (sink *influxdbSink) ExportData(dataBatch *core.DataBatch) {
 				Time: dataBatch.Timestamp.UTC(),
 			}
 
+			isDaemonSetPod := false
 			for key, value := range metricSet.Labels {
 				if _, exists := influxdbBlacklistLabels[key]; !exists {
 					if value != "" {
 						point.Tags[key] = value
+					}
+				}
+
+				if key == core.LabelPodName.Key {
+					parts := strings.Split(value, "-")
+					if _, exists := daemonsetPodNameBlacklist[parts[0]]; exists {
+						isDaemonSetPod = true
 					}
 				}
 			}
@@ -170,7 +198,19 @@ func (sink *influxdbSink) ExportData(dataBatch *core.DataBatch) {
 						point.Tags[key] = value
 					}
 				}
+
+				if key == core.LabelPodName.Key {
+					parts := strings.Split(value, "-")
+					if _, exists := daemonsetPodNameBlacklist[parts[0]]; exists {
+						isDaemonSetPod = true
+					}
+				}
 			}
+
+			if isDaemonSetPod {
+				continue
+			}
+
 			point.Tags["cluster_name"] = sink.c.ClusterName
 
 			dataPoints = append(dataPoints, point)
