@@ -47,9 +47,10 @@ var influxdbBlacklistLabels = map[string]struct{}{
 
 // Bytedance
 var daemonsetPodNameBlacklist = map[string]struct{}{
-	"toutiaonamingnkagent": {},
-	"vvtcewatch":           {},
-	"vvtceagent":           {},
+	"toutiaonamingnkagent":  {},
+	"vvtcewatch":            {},
+	"vvtceagent":            {},
+	"tcesysprobeprobeagent": {},
 }
 
 const (
