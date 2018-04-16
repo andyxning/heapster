@@ -118,10 +118,16 @@ func (sink *influxdbSink) ExportData(dataBatch *core.DataBatch) {
 					}
 				}
 
+				if key == "daemonset" && value == "1" {
+					isDaemonSetPod = true
+					break
+				}
+
 				if key == core.LabelPodName.Key {
 					parts := strings.Split(value, "-")
 					if _, exists := daemonsetPodNameBlacklist[parts[0]]; exists {
 						isDaemonSetPod = true
+						break
 					}
 				}
 			}
@@ -186,13 +192,24 @@ func (sink *influxdbSink) ExportData(dataBatch *core.DataBatch) {
 					}
 				}
 
+				if key == "daemonset" && value == "1" {
+					isDaemonSetPod = true
+					break
+				}
+
 				if key == core.LabelPodName.Key {
 					parts := strings.Split(value, "-")
 					if _, exists := daemonsetPodNameBlacklist[parts[0]]; exists {
 						isDaemonSetPod = true
+						break
 					}
 				}
 			}
+
+			if isDaemonSetPod {
+				continue
+			}
+
 			for key, value := range labeledMetric.Labels {
 				if _, exists := influxdbBlacklistLabels[key]; !exists {
 					if value != "" {
@@ -204,6 +221,7 @@ func (sink *influxdbSink) ExportData(dataBatch *core.DataBatch) {
 					parts := strings.Split(value, "-")
 					if _, exists := daemonsetPodNameBlacklist[parts[0]]; exists {
 						isDaemonSetPod = true
+						break
 					}
 				}
 			}
