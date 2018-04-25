@@ -263,11 +263,6 @@ func createDataProcessorsOrDie(kubernetesUrl *url.URL, podLister v1listers.PodLi
 	}
 
 	metricsToAggregateForNode := []string{
-		core.MetricCpuUsageRate.Name,
-		core.MetricMemoryCache.Name,
-		core.MetricMemoryRSS.Name,
-		core.MetricMemoryUsage.Name,
-		core.MetricMemoryWorkingSet.Name,
 		core.MetricCpuRequest.Name,
 		core.MetricCpuLimit.Name,
 		core.MetricMemoryRequest.Name,

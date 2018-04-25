@@ -194,15 +194,11 @@ var MetricCpuUsage = Metric{
 		return spec.HasCpu
 	},
 	GetValue: func(c *cadvisor.ContainerInfo, stat *cadvisor.ContainerStats) MetricValue {
-		var metricValue = MetricValue{
+		return MetricValue{
 			ValueType:  ValueInt64,
 			MetricType: MetricCumulative,
-			IntValue:   0,
+			IntValue:   int64(stat.Cpu.Usage.Total),
 		}
-		if !metrics.IsNode(c) {
-			metricValue.IntValue = int64(stat.Cpu.Usage.Total)
-		}
-		return metricValue
 	},
 }
 
@@ -218,15 +214,11 @@ var MetricMemoryUsage = Metric{
 		return spec.HasMemory
 	},
 	GetValue: func(c *cadvisor.ContainerInfo, stat *cadvisor.ContainerStats) MetricValue {
-		var metricValue = MetricValue{
+		return MetricValue{
 			ValueType:  ValueInt64,
 			MetricType: MetricGauge,
-			IntValue:   0,
+			IntValue:   int64(stat.Memory.Usage),
 		}
-		if !metrics.IsNode(c) {
-			metricValue.IntValue = int64(stat.Memory.Usage)
-		}
-		return metricValue
 	},
 }
 
@@ -242,15 +234,11 @@ var MetricMemoryCache = Metric{
 		return spec.HasMemory
 	},
 	GetValue: func(c *cadvisor.ContainerInfo, stat *cadvisor.ContainerStats) MetricValue {
-		var metricValue = MetricValue{
+		return MetricValue{
 			ValueType:  ValueInt64,
 			MetricType: MetricGauge,
-			IntValue:   0,
+			IntValue:   int64(stat.Memory.Cache),
 		}
-		if !metrics.IsNode(c) {
-			metricValue.IntValue = int64(stat.Memory.Cache)
-		}
-		return metricValue
 	},
 }
 
@@ -266,15 +254,11 @@ var MetricMemoryRSS = Metric{
 		return spec.HasMemory
 	},
 	GetValue: func(c *cadvisor.ContainerInfo, stat *cadvisor.ContainerStats) MetricValue {
-		var metricValue = MetricValue{
+		return MetricValue{
 			ValueType:  ValueInt64,
 			MetricType: MetricGauge,
-			IntValue:   0,
+			IntValue:   int64(stat.Memory.RSS),
 		}
-		if !metrics.IsNode(c) {
-			metricValue.IntValue = int64(stat.Memory.RSS)
-		}
-		return metricValue
 	},
 }
 
@@ -290,15 +274,11 @@ var MetricMemoryWorkingSet = Metric{
 		return spec.HasMemory
 	},
 	GetValue: func(c *cadvisor.ContainerInfo, stat *cadvisor.ContainerStats) MetricValue {
-		var metricValue = MetricValue{
+		return MetricValue{
 			ValueType:  ValueInt64,
 			MetricType: MetricGauge,
-			IntValue:   0,
+			IntValue:   int64(stat.Memory.WorkingSet),
 		}
-		if !metrics.IsNode(c) {
-			metricValue.IntValue = int64(stat.Memory.WorkingSet)
-		}
-		return metricValue
 	},
 }
 
@@ -314,15 +294,11 @@ var MetricMemoryPageFaults = Metric{
 		return spec.HasMemory
 	},
 	GetValue: func(c *cadvisor.ContainerInfo, stat *cadvisor.ContainerStats) MetricValue {
-		var metricValue = MetricValue{
+		return MetricValue{
 			ValueType:  ValueInt64,
 			MetricType: MetricCumulative,
-			IntValue:   0,
+			IntValue:   int64(stat.Memory.ContainerData.Pgfault),
 		}
-		if !metrics.IsNode(c) {
-			metricValue.IntValue = int64(stat.Memory.ContainerData.Pgfault)
-		}
-		return metricValue
 	},
 }
 
@@ -338,15 +314,11 @@ var MetricMemoryMajorPageFaults = Metric{
 		return spec.HasMemory
 	},
 	GetValue: func(c *cadvisor.ContainerInfo, stat *cadvisor.ContainerStats) MetricValue {
-		var metricValue = MetricValue{
+		return MetricValue{
 			ValueType:  ValueInt64,
 			MetricType: MetricCumulative,
-			IntValue:   0,
+			IntValue:   int64(stat.Memory.ContainerData.Pgmajfault),
 		}
-		if !metrics.IsNode(c) {
-			metricValue.IntValue = int64(stat.Memory.ContainerData.Pgmajfault)
-		}
-		return metricValue
 	},
 }
 
